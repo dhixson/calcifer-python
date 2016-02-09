@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import time
 
 
 class Test(object):
@@ -9,7 +10,7 @@ class Test(object):
     def __init__(self, command):
         print command
         filename = os.path.basename(__file__)
-        self.path = os.path.realpath(__file__).strip(filename) + "tests/"
+        self.path = os.path.dirname(os.path.realpath(__file__)) + '/tests/'
         """Gather command and execute the proper test function"""
         if command is None:
             print "Error: no test name given"
@@ -17,13 +18,12 @@ class Test(object):
         elif command == "all":
             self.all()
         elif command == "create":
+            print sys.argv
             try:
                 self.create(sys.argv[2])
             except IndexError:
                 print "Error: no new test name given"
                 return None
-            except:
-                print "Error: an unknown error has occured during test"
         else:
             try:
                 self.single(sys.argv[2])
@@ -39,12 +39,23 @@ class Test(object):
         for i in tests:
             subprocess.call(['python', self.path + i])
 
-    def create(self):
+    def create(self, name):
         """Create a new unittest file in the tests directory"""
-        pass
+        file_bin = os.path.dirname(os.path.realpath(__file__)) + '/bin/templates/'
+        print file_bin
+        with open(file_bin + 'test.py') as f:
+            template = f.read().replace('<_name_>', name)
+        if template == "":
+            print "File does not exist"
+            return None
+        timestamp = int(time.time())
+        with open(self.path + str(timestamp) + "_" + name + '.py', 'w') as w:
+            w.write(template)
 
     def single(self, name):
+        # make sure .py is added to the file
         test_file = self.path + name.strip('.py') + '.py'
+        print test_file
         subprocess.call(['python', test_file])
 
 
