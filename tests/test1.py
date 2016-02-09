@@ -1,5 +1,6 @@
 import unittest
 
+
 class TestSingleMethod(unittest.TestCase):
 
 	def test_true(self):
