@@ -2,14 +2,18 @@ import os
 import subprocess
 import sys
 import time
+import re
 
 
+# Class: Test
+# Purpose: Create and Run unit tests
+# Created By: Dane Hixson
+# Last Updated By: Dane Hixson
+# Last Updated: 02/11/2016
 class Test(object):
     """Run unit tests in the tests directory"""
 
     def __init__(self, command):
-        print command
-        filename = os.path.basename(__file__)
         self.path = os.path.dirname(os.path.realpath(__file__)) + '/tests/'
         """Gather command and execute the proper test function"""
         if command is None:
@@ -18,7 +22,6 @@ class Test(object):
         elif command == "all":
             self.all()
         elif command == "create":
-            print sys.argv
             try:
                 self.create(sys.argv[2])
             except IndexError:
@@ -28,10 +31,8 @@ class Test(object):
             try:
                 self.single(sys.argv[2])
             except IndexError:
-                print "Error: no test name gidsfven"
+                print "Error: no test name given"
                 return None
-            except:
-                print "Error: an unknown error has occured during test"
 
     def all(self):
         """Iterate through all tests in the tests directory"""
@@ -41,8 +42,7 @@ class Test(object):
 
     def create(self, name):
         """Create a new unittest file in the tests directory"""
-        file_bin = os.path.dirname(os.path.realpath(__file__)) + '/bin/templates/'
-        print file_bin
+        file_bin = os.path.dirname(os.path.realpath(__file__)) + '/assets/templates/'
         with open(file_bin + 'test.py') as f:
             template = f.read().replace('<_name_>', name)
         if template == "":
@@ -51,14 +51,21 @@ class Test(object):
         timestamp = int(time.time())
         with open(self.path + str(timestamp) + "_" + name + '.py', 'w') as w:
             w.write(template)
+        print "Test %s created" % name
 
     def single(self, name):
         # make sure .py is added to the file
-        test_file = self.path + name.strip('.py') + '.py'
-        print test_file
-        subprocess.call(['python', test_file])
+        tests = {re.sub('[\d]+_', '', x): x for x in os.listdir(self.path)}
+        print tests
+        test_file = name.strip('.py') + '.py'
+        subprocess.call(['python', self.path + tests[test_file]])
 
 
+# Class: Spark
+# Purpose: The main spark driver
+# Written By: Dane Hixson
+# Last updated By: Dane Hixson
+# Last updated: 02/11/2016
 class Spark(object):
     """Run commands to aid in development"""
 
@@ -69,7 +76,6 @@ class Spark(object):
         }
 
         comm = command.split(':')
-        print comm
         if len(comm) > 2:
             print "Error: too many arguments provided"
             return None
