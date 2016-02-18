@@ -1,29 +1,33 @@
+"""Test controller."""
+
+
 class TestController(object):
+    """Class of rest test cases."""
 
     def __init__pass(self):
-        """Initialize class"""
+        """Initialize class."""
         # Place pre-processing code here#
     @staticmethod
     def list():
-        """list all items"""
+        """list all items."""
         return 64
 
     @staticmethod
     def show(key):
-        """list single item"""
+        """list single item."""
         return key**2
 
     @staticmethod
     def create():
-        """create an item"""
+        """create an item."""
         return 64
 
     @staticmethod
     def update(key):
-        """update an item"""
+        """update an item."""
         return key**2
 
     @staticmethod
     def delete(key):
-        """delete an item"""
+        """delete an item."""
         return key**2

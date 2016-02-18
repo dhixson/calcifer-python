@@ -1,7 +1,10 @@
 import os
 import sys
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).strip('tests'))
 import unittest
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).strip('tests'))
+# Place import for app here
+# i.e "from app.<subpackage>.<file> import <class>"
+
 
 class Test<_name_>(unittest.TestCase):
 
