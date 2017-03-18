@@ -4,7 +4,7 @@
 class <_name_>Controller(object):
     """Class of <_name_> docstring."""
 
-    def __init__pass(self):
+    def __init__(self):
         """Initialize class."""
         # Place pre-processing code here#
         pass
